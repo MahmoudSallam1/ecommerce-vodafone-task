@@ -1,36 +1,31 @@
 import React, { useContext } from "react";
 import { GlobalState } from "../../context/GlobalState";
+import { Link } from "react-router-dom";
+import Card from "../../components/Card/Card";
+import { Col, Row } from "antd";
 
 function HomePage() {
   const state = useContext(GlobalState);
   const { products } = state.productsAPI;
   const { items, addItemToCart } = state.cartAPI;
 
+  console.log(products);
+
   return (
-    <div>
+    <div className="container">
+    <Row justify="center" align="middle" style={{padding:"0 50px"}} gutter={[32, 32]}>
       {products && products.length > 0 ? (
-        <div className="product__home--container">
-          {products.map((product) => (
-            <h3 onClick={() => addItemToCart(product)} key={product.id}>
-              {product.title}
-            </h3>
-          ))}
-        </div>
+        products.map((product) => (
+          <Col xs={24} sm={24} md={12} lg={8}>
+            <Card key={product.id} product={product} />
+          </Col>
+        ))
       ) : (
         <div>Loading...</div>
       )}
 
-      <div>
-        {items && items.length > 0 ? (
-          <div className="product__home--container">
-            {items.map((item) => (
-              <h6  key={item.id}>
-                {item.title}
-              </h6>
-            ))}
-          </div>
-        ) : null}
-      </div>
+      <Link to="/cart">Go To Cart</Link>
+    </Row>
     </div>
   );
 }
