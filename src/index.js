@@ -1,12 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import "antd/dist/antd.css";
+
+import "./index.css";
+import App from "./App";
+import { GlobalStateContext } from "./context/GlobalState";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <GlobalStateContext>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </GlobalStateContext>,
+  document.getElementById("root")
 );
-

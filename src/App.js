@@ -1,11 +1,16 @@
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./views/Login/LoginPage";
+import HomePage from "./views/Home/HomePage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-   Vodafone | Ecommerce Task
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/*" element={<HomePage />} />
+      </Routes>
+    </Router>
   );
 }
 
