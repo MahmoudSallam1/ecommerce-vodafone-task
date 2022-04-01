@@ -3,14 +3,14 @@ import { GlobalState } from "../../context/GlobalState";
 
 function CartPage() {
   const state = useContext(GlobalState);
-  const { items, addItemToCart } = state.cartAPI;
-  console.log(items);
+  const { cart } = state.cartAPI;
+  console.log(cart);
 
   return (
     <div>
-      {items && items.length > 0 ? (
+      {cart && cart.length > 0 ? (
         <div className="product__home--container">
-          {items.map((item) => (
+          {cart.map((item) => (
             <h6 key={item.id}>{item.title}</h6>
           ))}
         </div>

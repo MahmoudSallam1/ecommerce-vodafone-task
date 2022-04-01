@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
-function Card({ product, addItemToCart }) {
+function Card({ product, addCart }) {
   let navigate = useNavigate();
 
   return (
@@ -35,7 +35,7 @@ function Card({ product, addItemToCart }) {
       </Title>
       <Text strong>{product.price} L.E</Text>
       <Button
-        onClick={() => addItemToCart(product)}
+        onClick={() => addCart(product)}
         style={{ marginTop: "2em" }}
         type="primary"
         block

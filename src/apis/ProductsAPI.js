@@ -28,6 +28,7 @@ export default function ProductsAPI() {
       .catch((err) => console.log(err));
   }, []);
 
+
   return {
     products,
     categories,
