@@ -11,8 +11,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<LoginPage />} />
-        <Route path="products" element={<ProductsPage />} />
+        <Route  path="/login" element={<LoginPage />} />
+        <Route path="/*" element={<ProductsPage />} />
         <Route path="products/:productID" element={<ProductDetailsPage />} />
         <Route path="cart" element={<CartPage />} />
       </Routes>

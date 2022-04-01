@@ -12,7 +12,7 @@ function Header() {
       {" "}
       <nav className="menu">
         <Text strong>
-          <Link to="/products">Vodafone | Ecommerce</Link>
+          <Link to="/">Vodafone | Ecommerce</Link>
         </Text>
 
         <ul>
