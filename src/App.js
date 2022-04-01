@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
+import './App.less';
 import LoginPage from "./views/Login/LoginPage";
 import ProductsPage from "./views/Products/ProductsPage/ProductsPage";
 import ProductDetailsPage from "./views/Products/ProductDetailsPage/ProductDetailsPage";
