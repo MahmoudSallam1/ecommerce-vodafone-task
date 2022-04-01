@@ -24,7 +24,7 @@ function Categories() {
 
           {categories.map((category) => (
             <Radio.Button key={category} value={category}>
-              {category}
+              {category.toUpperCase()}
             </Radio.Button>
           ))}
         </Radio.Group>
