@@ -46,6 +46,7 @@ function Card({ product, addCart }) {
       <Rate
         style={{ display: "block",marginTop:"0.6128em" }}
         allowHalf
+        disabled 
         value={product.rating.rate}
       />
 

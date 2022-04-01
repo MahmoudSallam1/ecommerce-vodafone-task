@@ -97,11 +97,12 @@ function CartPage() {
                     {" "}
                     <img
                       style={{
+                        display: "block",
+                        objectFit: "contain",
                         height: "100px",
-                        margin: "0 auto",
+                        width: "100px",
                         maxWidth: "100%",
                         maxHeight: "100%",
-                        display: "block",
                       }}
                       src={item.image}
                       alt={item.title}
