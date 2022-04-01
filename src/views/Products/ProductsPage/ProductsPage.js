@@ -22,11 +22,11 @@ function HomePage() {
       <Header />
       <div className="products-container">
         <Categories />
-        <Content style={{ padding: "0 3em" }}>
+        <Content >
           <Row
             justify="center"
             align="middle"
-            style={{ padding: "0 50px" }}
+            // style={{ padding: "0 50px" }}
             gutter={[32, 32]}
           >
             {!isLoading ? (
