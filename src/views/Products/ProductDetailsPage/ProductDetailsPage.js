@@ -3,12 +3,11 @@ import { useParams } from "react-router-dom";
 import Header from "../../../components/Header/Header";
 
 import useFetch from "../../../hooks/useFetch";
-import { BASE_URL } from "../../../constants/constants";
 import "./product.details.css";
 
 function ProductDetailsPage() {
   let { productID } = useParams();
-  let { data } = useFetch(`${BASE_URL}/products/${productID}`);
+  let { data } = useFetch(`/products/${productID}`);
   console.log(data);
 
   return (

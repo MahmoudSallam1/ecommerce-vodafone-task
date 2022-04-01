@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import Card from "../../../components/Card/Card";
 import { Col, Row } from "antd";
 import Header from "../../../components/Header/Header";
+
+import Categories from "../../../components/Categories/Categories";
 import "./products.styles.css";
+
+
 
 import { Layout } from "antd";
 const { Content } = Layout;
@@ -19,6 +23,8 @@ function HomePage() {
   return (
     <>
     <Header/>
+
+    <Categories/>
     <div className="products-container">
       <Content style={{ padding: "0 3em" }}>
         <Row
