@@ -1,23 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 
-import useFetch from "../../hooks/useFetch";
 import { Radio } from "antd";
 import { GlobalState } from "../../context/GlobalState";
 
+import "./categories.styles.css"
+
 function Categories() {
   const state = useContext(GlobalState);
-  const { setQuery,query } = state.productsAPI;
-
-  const { data } = useFetch("products/categories");
-
+  const { setQuery, categories } = state.productsAPI;
 
   const handleChangeCategory = (e) => {
     setQuery(e.target.value);
-    console.log(setQuery,query);
-
   };
   return (
-    <div>
+    <div className="categories-container">
       {" "}
       <Radio.Group
         onChange={handleChangeCategory}
@@ -26,9 +22,11 @@ function Categories() {
       >
         <Radio.Button value="">All</Radio.Button>
 
-        {data && data.length > 0
-          ? data.map((category) => (
-              <Radio.Button key={category} value={category}>{category}</Radio.Button>
+        {categories && categories.length > 0
+          ? categories.map((category) => (
+              <Radio.Button key={category} value={category}>
+                {category}
+              </Radio.Button>
             ))
           : null}
       </Radio.Group>

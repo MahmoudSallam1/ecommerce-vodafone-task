@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { GlobalState } from "../../../context/GlobalState";
-import { Link } from "react-router-dom";
 import Card from "../../../components/Card/Card";
 import { Col, Row } from "antd";
 import Header from "../../../components/Header/Header";
@@ -16,16 +15,16 @@ const { Content } = Layout;
 function HomePage() {
   const state = useContext(GlobalState);
   const { products } = state.productsAPI;
-  const { items, addItemToCart } = state.cartAPI;
+  const { addItemToCart } = state.cartAPI;
 
-  console.log(products);
 
   return (
     <>
     <Header/>
 
-    <Categories/>
     <div className="products-container">
+    <Categories/>
+
       <Content style={{ padding: "0 3em" }}>
         <Row
           justify="center"
