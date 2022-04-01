@@ -9,6 +9,7 @@ function Card({ product, addCart }) {
 
   return (
     <CardANT
+    hoverable
       cover={
         <img
           alt={product.title}

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { showSuccess, showInfo } from "../utils";
 
 export default function ProductsAPI() {
   const [cart, setCart] = useState([]);
 
-  // get cart
+  // adding cart item to localstroage
 
   useEffect(() => {
     const dataCart = JSON.parse(localStorage.getItem("dataCart"));
@@ -16,17 +17,19 @@ export default function ProductsAPI() {
 
   const addCart = (product) => {
     const check = cart.every((item) => {
-      return item._id !== product.id;
+      return item.id !== product.id;
     });
     if (check) {
-      setCart([...cart, { ...product }]);
+      setCart([...cart, { ...product, quantity: 1 }]);
+      showSuccess();
     } else {
-      alert("The product has been added to cart.");
+      showInfo();
     }
   };
 
   return {
     cart,
     addCart,
+    setCart,
   };
 }

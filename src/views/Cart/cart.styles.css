@@ -1,0 +1,27 @@
+.cart-container{
+    padding: 4em 0;
+    width: 95%;
+    max-width: 1080px;
+    margin: 0 auto;
+ 
+}
+
+.cart-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-item-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2em;
+}
+
+.cart-item-amount{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6128em;
+}
