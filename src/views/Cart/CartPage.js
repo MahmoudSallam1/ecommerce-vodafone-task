@@ -2,9 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../context/GlobalState";
 import { Card, Typography } from "antd";
 
-import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import {
+  PlusCircleOutlined,
+  MinusCircleOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 
 import Header from "../../components/Header/Header";
+import EmptyData from "../../components/EmptyData/EmptyData";
+
+import { showConfirm } from "../../utils";
 import "./cart.styles.css";
 
 const { Title, Text } = Typography;
@@ -47,20 +54,28 @@ function CartPage() {
     setCart([...cart]);
   };
 
+  // remove item
+
   const removeProduct = (id) => {
-    if (window.confirm("Do you want to delete this product?")) {
+    const onConfirm = () => {
       cart.forEach((item, index) => {
-        if (item._id === id) {
+        if (item.id === id) {
           cart.splice(index, 1);
         }
       });
       setCart([...cart]);
-    }
+    };
+
+    showConfirm(onConfirm);
   };
 
   if (cart.length === 0)
     return (
-      <h2 style={{ textAlign: "center", fontSize: "5rem" }}>Cart Empty</h2>
+      <>
+        {" "}
+        <Header />
+        <EmptyData description="No items found in your cart!" />
+      </>
     );
 
   return (
@@ -71,7 +86,12 @@ function CartPage() {
         {cart && cart.length > 0 ? (
           <div>
             {cart.map((item) => (
-              <Card hoverable key={item.id} title={item.title}>
+              <Card
+                style={{ marginBottom: "1em" }}
+                hoverable
+                key={item.id}
+                title={item.title}
+              >
                 <div className="cart-item">
                   <div className="cart-item-content">
                     {" "}
@@ -96,6 +116,13 @@ function CartPage() {
                       <Title style={{ margin: "0.6128em 0 " }} level={5}>
                         {item.price} L.E
                       </Title>
+                      <Text
+                        underline
+                        type="danger"
+                        onClick={() => removeProduct(item.id)}
+                      >
+                        Remove
+                      </Text>
                     </div>
                   </div>
 
@@ -105,7 +132,9 @@ function CartPage() {
                       onClick={() => decrement(item.id)}
                     />
 
-                    <Title type="danger" style={{margin:0}} level={4}>{item.quantity}</Title>
+                    <Title type="danger" style={{ margin: 0 }} level={4}>
+                      {item.quantity}
+                    </Title>
 
                     <PlusCircleOutlined
                       style={{ fontSize: "1.5rem" }}

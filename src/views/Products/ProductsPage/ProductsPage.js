@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { GlobalState } from "../../../context/GlobalState";
 import Card from "../../../components/Card/Card";
-import { Col, Row } from "antd";
+import { Col, Row, Skeleton } from "antd";
 import Header from "../../../components/Header/Header";
+import EmptyData from "../../../components/EmptyData/EmptyData";
 
 import Categories from "../../../components/Categories/Categories";
 import "./products.styles.css";
@@ -12,16 +13,15 @@ const { Content } = Layout;
 
 function HomePage() {
   const state = useContext(GlobalState);
-  const { products } = state.productsAPI;
+  const { products, isLoading } = state.productsAPI;
   const { addCart } = state.cartAPI;
+
 
   return (
     <>
       <Header />
-
       <div className="products-container">
         <Categories />
-
         <Content style={{ padding: "0 3em" }}>
           <Row
             justify="center"
@@ -29,14 +29,22 @@ function HomePage() {
             style={{ padding: "0 50px" }}
             gutter={[32, 32]}
           >
-            {products && products.length > 0 ? (
-              products.map((product) => (
-                <Col key={product.id} xs={24} sm={24} md={12} lg={8}>
-                  <Card addCart={addCart} product={product} />
-                </Col>
-              ))
+            {!isLoading ? (
+              products && products.length > 0 ? (
+                products.map((product) => (
+                  <Col key={product.id} xs={24} sm={24} md={12} lg={8}>
+                    <Card addCart={addCart} product={product} />
+                  </Col>
+                ))
+              ) : (
+                <EmptyData description="Sorry, no products found!" />
+              )
             ) : (
-              <div>Loading...</div>
+              <>
+                {" "}
+                <Skeleton avatar />
+                <Skeleton avatar />
+              </>
             )}
           </Row>
         </Content>
