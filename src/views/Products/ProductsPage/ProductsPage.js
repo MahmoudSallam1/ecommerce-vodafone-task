@@ -3,6 +3,7 @@ import { GlobalState } from "../../../context/GlobalState";
 import Card from "../../../components/Card/Card";
 import { Col, Row } from "antd";
 import Header from "../../../components/Header/Header";
+import Footer from "../../../components/Footer/Footer";
 import EmptyData from "../../../components/EmptyData/EmptyData";
 
 import LoadingSkeleton from "../../../components/LoadingSkeleton/LoadingSkeleton";
@@ -46,6 +47,7 @@ function HomePage() {
           </Row>
         </Content>
       </div>
+      <Footer/>
     </>
   );
 }

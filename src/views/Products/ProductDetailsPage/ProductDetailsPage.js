@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../../components/Header/Header";
+import Footer from "../../../components/Footer/Footer";
 import { Row, Button, Col, Image, Rate, Typography } from "antd";
 import LoadingSkeleton from "../../../components/LoadingSkeleton/LoadingSkeleton";
 import { GlobalState } from "../../../context/GlobalState";
