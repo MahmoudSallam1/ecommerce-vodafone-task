@@ -7,8 +7,8 @@ import "./product.details.css";
 
 function ProductDetailsPage() {
   let { productID } = useParams();
-  let { data } = useFetch(`/products/${productID}`);
-  console.log(data);
+  let  [product]  = useFetch(`/products/${productID}`);
+  console.log(product);
 
   return (
     <>

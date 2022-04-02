@@ -1,0 +1,10 @@
+.empty-data-container{
+    height: 60vh;
+    padding: 4em 0;
+    width: 95%;
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    place-items: center;
+ 
+}
