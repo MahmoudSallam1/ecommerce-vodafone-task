@@ -18,6 +18,8 @@ function HomePage() {
   const state = useContext(GlobalState);
   const { products, isLoading } = state.productsAPI;
   const { addCart } = state.cartAPI;
+  const { getToken } = state.userAPI;
+  const isAdmin = getToken()?.isAdmin;
 
   return (
     <>
@@ -35,7 +37,7 @@ function HomePage() {
               products && products.length > 0 ? (
                 products.map((product) => (
                   <Col key={product.id} xs={24} sm={24} md={12} lg={8}>
-                    <Card addCart={addCart} product={product} />
+                    <Card isAdmin={isAdmin} addCart={addCart} product={product} />
                   </Col>
                 ))
               ) : (

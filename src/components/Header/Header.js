@@ -26,7 +26,6 @@ function Header() {
         <ul>
           {getToken()?.isAdmin ? (
             <li
-              className="link"
               onClick={() => {
                 navigate("/admin");
               }}
@@ -36,7 +35,7 @@ function Header() {
           ) : null}
 
           {getToken()?.isAdmin ? null : (
-            <li >
+            <li>
               <Link to="/cart">Cart</Link>
             </li>
           )}

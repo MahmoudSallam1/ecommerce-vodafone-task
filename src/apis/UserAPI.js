@@ -9,7 +9,7 @@ export default function UserAPI() {
     const { username, password } = user;
 
     if (username === "user" && password === "user") {
-      setToken(user);
+      setToken({ ...user, isAdmin: false });
     } else if (username === "admin" && password === "admin") {
       setToken({ ...user, isAdmin: true });
     }
