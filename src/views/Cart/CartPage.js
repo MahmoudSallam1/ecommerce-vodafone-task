@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalState } from "../../context/GlobalState";
-import { Card, Typography } from "antd";
+import { Card, Typography, Divider } from "antd";
 
 import {
   PlusCircleOutlined,
@@ -82,12 +82,21 @@ function CartPage() {
     <>
       <Header />
       <div className="cart-container">
-        {" "}
+        <div style={{textAlign:"right"}}>
+          {" "}
+          <Text style={{ textTransform: "uppercase" }} type="secondary">
+            Total
+          </Text>
+          <Title type="danger" style={{ margin: "0.6128em 0 " }} level={4}>
+            {total} EGP
+          </Title>
+
+        </div>
         {cart && cart.length > 0 ? (
           <div>
             {cart.map((item) => (
               <Card
-                style={{ marginBottom: "1em" }}
+                style={{ margin: "1.3em 0" }}
                 hoverable
                 key={item.id}
                 title={item.title}
@@ -115,7 +124,7 @@ function CartPage() {
                         {item.category}
                       </Text>
                       <Title style={{ margin: "0.6128em 0 " }} level={5}>
-                        {item.price} L.E
+                        {item.price} EGP
                       </Title>
                       <Text
                         underline
