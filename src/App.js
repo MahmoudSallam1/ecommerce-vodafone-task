@@ -8,12 +8,17 @@ import ProductDetailsPage from "./views/Products/ProductDetailsPage/ProductDetai
 import CartPage from "./views/Cart/CartPage";
 
 import ProtectedRoutes from "./routes/ProtectedRoutes";
+import AdminPage from "./views/Admin/AdminPage";
 
+import { GlobalState } from "./context/GlobalState";
 function App() {
+  const state = useContext(GlobalState);
+  const { getToken } = state.userAPI;
+  const isAdmin = getToken()?.isAdmin;
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} />
         <Route
           path="/*"
           element={
@@ -36,6 +41,14 @@ function App() {
           element={
             <ProtectedRoutes>
               <CartPage />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="admin"
+          element={
+            <ProtectedRoutes>
+              {isAdmin ? <AdminPage /> : <h3>No authorized!!</h3>}
             </ProtectedRoutes>
           }
         />

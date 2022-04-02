@@ -6,10 +6,8 @@ import UserAPI from "../apis/UserAPI";
 export const GlobalState = createContext();
 
 export const GlobalStateContext = ({ children }) => {
-  const [token, setToken] = useState(false);
 
   const statedData = {
-    token: [token, setToken],
     productsAPI: ProductsAPI(),
     cartAPI: CartAPI(),
     userAPI:UserAPI()
