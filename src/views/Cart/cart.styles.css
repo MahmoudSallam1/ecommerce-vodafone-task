@@ -23,5 +23,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: column;
     gap: 0.6128em;
+}
+
+@media (min-width:650px) {
+    .cart-item-amount{
+        flex-direction: row;
+    }
 }

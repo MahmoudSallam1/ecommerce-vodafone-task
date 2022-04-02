@@ -47,7 +47,7 @@ function HomePage() {
           </Row>
         </Content>
       </div>
-      <Footer/>
+      {!isLoading ? <Footer /> : null}
     </>
   );
 }
