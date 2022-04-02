@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { GlobalState } from "../../../context/GlobalState";
 import Card from "../../../components/Card/Card";
-import { Col, Row, Skeleton } from "antd";
+import { Col, Row } from "antd";
 import Header from "../../../components/Header/Header";
 import EmptyData from "../../../components/EmptyData/EmptyData";
+
+import LoadingSkeleton from "../../../components/LoadingSkeleton/LoadingSkeleton";
 
 import Categories from "../../../components/Categories/Categories";
 import "./products.styles.css";
@@ -16,13 +18,12 @@ function HomePage() {
   const { products, isLoading } = state.productsAPI;
   const { addCart } = state.cartAPI;
 
-
   return (
     <>
       <Header />
       <div className="products-container">
         <Categories />
-        <Content >
+        <Content>
           <Row
             justify="center"
             align="middle"
@@ -40,11 +41,7 @@ function HomePage() {
                 <EmptyData description="Sorry, no products found!" />
               )
             ) : (
-              <>
-                {" "}
-                <Skeleton avatar />
-                <Skeleton avatar />
-              </>
+              <LoadingSkeleton />
             )}
           </Row>
         </Content>
