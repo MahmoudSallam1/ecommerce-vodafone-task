@@ -24,10 +24,22 @@ function Header() {
         </Text>
 
         <ul>
-          <li>User</li>
-          <li>
-            <Link to="/cart">Cart</Link>
-          </li>
+          {getToken()?.isAdmin ? (
+            <li
+              onClick={() => {
+                navigate("/admin");
+              }}
+            >
+              Admin
+            </li>
+          ) : null}
+
+          {getToken()?.isAdmin ? null : (
+            <li>
+              <Link to="/cart">Cart</Link>
+            </li>
+          )}
+
           <li
             onClick={() => {
               logout();
