@@ -11,7 +11,7 @@ const { Title, Text, Paragraph } = Typography;
 
 function AdminPage() {
   const state = useContext(GlobalState);
-  const { isLoading, products } = state.productsAPI;
+  const { isLoading, products,setProducts } = state.productsAPI;
 
 
   return (
@@ -22,7 +22,7 @@ function AdminPage() {
         {!isLoading ? (
           <Row justify="space-between" gutter={[16, 16]}>
             <Col>
-              <EditableTable products={products} />
+              <EditableTable setProducts={setProducts} products={products} />
             </Col>
           </Row>
         ) : (

@@ -1,55 +1,38 @@
 import React, { useState } from "react";
-import {
-  Table,
-  Input,
-  InputNumber,
-  Popconfirm,
-  Form,
-  Typography,
-  Button,
-} from "antd";
+import { Table, Form, Button, Modal, Input } from "antd";
+import { getColumns, EditableCell, mergeColumns } from "./helpers/helper";
 
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
-export const EditableTable = ({ products }) => {
+export const EditableTable = ({ products, setProducts }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [form2] = Form.useForm();
   const [data, setData] = useState(products);
   const [editingKey, setEditingKey] = useState("");
+  /* ===================
+  ======functions======= */
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const onFinish = (product) => {
+    console.log(product);
+    onReset();
+
+    setIsModalVisible(false);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const onReset = () => {
+    form2.resetFields();
+  };
 
   const isEditing = (record) => record.id === editingKey;
+
+  // edit cell
 
   const edit = (record) => {
     form.setFieldsValue({
@@ -62,9 +45,14 @@ export const EditableTable = ({ products }) => {
     setEditingKey(record.id);
   };
 
+  // cancel editing
   const cancel = () => {
     setEditingKey("");
   };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  // save editing
 
   const save = async (id) => {
     try {
@@ -89,82 +77,9 @@ export const EditableTable = ({ products }) => {
     }
   };
 
-  const columns = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      width: "25%",
-      editable: false,
-    },
-    {
-      title: "Title",
-      dataIndex: "title",
-      width: "25%",
-      editable: true,
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      width: "25%",
-      editable: true,
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      width: "25%",
-      editable: true,
-    },
-    {
-      title: "Operation",
-      dataIndex: "operation",
-      render: (_, record) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.id)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Save
-            </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <>
-            <Typography.Link
-              disabled={editingKey !== ""}
-              onClick={() => edit(record)}
-            >
-              Edit
-            </Typography.Link>{" "}
-            <Typography.Link disabled={editingKey !== ""}>
-              Delete
-            </Typography.Link>
-          </>
-        );
-      },
-    },
-  ];
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
+  const columns = getColumns(editingKey, isEditing, save, cancel, edit);
+  const mergedColumns = mergeColumns(columns, isEditing);
 
-    return {
-      ...col,
-      onCell: (record) => ({
-        record,
-        inputType: col.dataIndex === "price" ? "number" : "text",
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
   return (
     <Form form={form} component={false}>
       <Button
@@ -172,9 +87,64 @@ export const EditableTable = ({ products }) => {
         style={{
           marginBottom: 16,
         }}
+        onClick={showModal}
       >
         Add product
       </Button>
+      <Modal
+        onCancel={handleCancel}
+        maskClosable={false}
+        title="Add new product"
+        footer={null}
+        visible={isModalVisible}
+      >
+        <Form
+          form={form2}
+          name="basic"
+          wrapperCol={{ span: 24 }}
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Product name"
+            name="productName"
+            rules={[{ message: "Please input  product name!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Product description"
+            name="productDescription"
+            rules={[{ message: "Please input  product description!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Product category"
+            name="productCategory"
+            rules={[{ message: "Please input  product category!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            type="number"
+            label="Product price"
+            name="productPrice"
+            rules={[{ message: "Please input  product price!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ span: 24 }}>
+            <Button block type="primary" htmlType="submit">
+              Add
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
       <Table
         components={{
           body: {
