@@ -28,8 +28,6 @@ The task is to build basic e-commerce store web app that will facilitate shoppin
 
 ## Installation 
 
-Install Intelligent-medical-system  with npm
-
 ```bash 
   npm install
 ```
@@ -54,4 +52,4 @@ I designed the user interface using Figma. You could check the it out from here 
 ## Feedback
 
 If you have any feedback, please reach out to me at m.sallam@nu.edu.eg or
-msallam.me
+https://www.msallam.me/
