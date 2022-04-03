@@ -41,7 +41,9 @@ Open http://localhost:3000 to view it in the browser.
 ## Tech Stack
 
 **Client:** React, Context API, AntDesign
+
 **Design:** Figma
+
 **Deployment:** Vercel
 
 ## UX/UI Design
