@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { GlobalState } from "../../../context/GlobalState";
 import Card from "../../../components/Card/Card";
 import { Col, Row } from "antd";
 import Header from "../../../components/Header/Header";
+import Footer from "../../../components/Footer/Footer";
 import EmptyData from "../../../components/EmptyData/EmptyData";
 
 import LoadingSkeleton from "../../../components/LoadingSkeleton/LoadingSkeleton";
@@ -17,6 +18,8 @@ function HomePage() {
   const state = useContext(GlobalState);
   const { products, isLoading } = state.productsAPI;
   const { addCart } = state.cartAPI;
+  const { getToken } = state.userAPI;
+  const isAdmin = getToken()?.isAdmin;
 
   return (
     <>
@@ -34,7 +37,11 @@ function HomePage() {
               products && products.length > 0 ? (
                 products.map((product) => (
                   <Col key={product.id} xs={24} sm={24} md={12} lg={8}>
-                    <Card addCart={addCart} product={product} />
+                    <Card
+                      isAdmin={isAdmin}
+                      addCart={addCart}
+                      product={product}
+                    />
                   </Col>
                 ))
               ) : (
@@ -46,6 +53,7 @@ function HomePage() {
           </Row>
         </Content>
       </div>
+      {!isLoading ? <Footer /> : null}
     </>
   );
 }

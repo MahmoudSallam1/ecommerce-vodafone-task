@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../../components/Header/Header";
+import Footer from "../../../components/Footer/Footer";
 import { Row, Button, Col, Image, Rate, Typography } from "antd";
 import LoadingSkeleton from "../../../components/LoadingSkeleton/LoadingSkeleton";
 import { GlobalState } from "../../../context/GlobalState";
@@ -12,6 +13,8 @@ const { Title, Text, Paragraph } = Typography;
 function ProductDetailsPage() {
   const state = useContext(GlobalState);
   const { addCart } = state.cartAPI;
+  const { getToken } = state.userAPI;
+  const isAdmin = getToken()?.isAdmin;
 
   let { productID } = useParams();
   let [product, loading] = useFetch(`/products/${productID}`);
@@ -54,14 +57,16 @@ function ProductDetailsPage() {
               <Title type="danger" style={{ margin: "0.6128em 0 " }} level={4}>
                 {product && product.price} EGP
               </Title>
-              <Button
-                onClick={() => addCart(product)}
-                style={{ marginTop: "1.5em" }}
-                type="primary"
-                block
-              >
-                Add to cart
-              </Button>
+              {!isAdmin ? (
+                <Button
+                  onClick={() => addCart(product)}
+                  style={{ marginTop: "1.5em" }}
+                  type="primary"
+                  block
+                >
+                  Add to cart
+                </Button>
+              ) : null}
             </Col>
           </Row>
         ) : (

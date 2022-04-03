@@ -82,15 +82,18 @@ function CartPage() {
     <>
       <Header />
       <div className="cart-container">
-        <div style={{textAlign:"right"}}>
+        <div style={{ textAlign: "right" }}>
           {" "}
           <Text style={{ textTransform: "uppercase" }} type="secondary">
             Total
           </Text>
-          <Title type="danger" style={{ margin: "0.6128em 0 " }} level={4}>
+          <Title
+            type="danger"
+            style={{ margin: "0", color: "#E60000" }}
+            level={4}
+          >
             {total} EGP
           </Title>
-
         </div>
         {cart && cart.length > 0 ? (
           <div>
@@ -142,7 +145,11 @@ function CartPage() {
                       onClick={() => decrement(item.id)}
                     />
 
-                    <Title type="danger" style={{ margin: 0 }} level={4}>
+                    <Title
+                      type="danger"
+                      style={{ margin: 0, color: "#E60000" }}
+                      level={4}
+                    >
                       {item.quantity}
                     </Title>
 

@@ -9,34 +9,65 @@ export default function ProductsAPI() {
 
   // get products
 
-  useEffect(() => {
+  const getProducts = async () => {
     setIsLoading(true);
-    fetch(
-      query === ""
-        ? `${BASE_URL}/products`
-        : `${BASE_URL}/products/category/${query}`
-    )
-      .then((res) => res.json())
-      .then((products) => {
-        setProducts(products);
-        setIsLoading(false);
-      })
-      .catch((err) => console.log(err));
+
+    try {
+      const response = await fetch(
+        query === ""
+          ? `${BASE_URL}/products`
+          : `${BASE_URL}/products/category/${query}`
+      );
+      const data = await response.json();
+      setProducts(data);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // get categories
+
+  const getCategories = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/products/categories`);
+      const data = await response.json();
+      setCategories(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // add product
+
+  const addProduct = async (product) => {
+    try {
+      const response = await fetch(`${BASE_URL}/products`, {
+        method: "POST",
+        body: JSON.stringify(product),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
   }, [query]);
 
   // get categories
 
   useEffect(() => {
-    fetch(`${BASE_URL}/products/categories`)
-      .then((res) => res.json())
-      .then((category) => setCategories(category))
-      .catch((err) => console.log(err));
+    getCategories();
   }, []);
 
   return {
     products,
     categories,
     setProducts,
+    addProduct,
     setQuery,
     query,
     isLoading,

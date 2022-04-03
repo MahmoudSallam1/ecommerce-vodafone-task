@@ -27,3 +27,18 @@
 .menu ul li:first-child {
   margin-left: 0;
 }
+
+.menu ul li{
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.menu ul li:hover{
+  color: #E60000;
+  font-weight: 500;
+}
+
+.menu ul li a {
+  color: unset;
+}

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
-function Card({ product, addCart }) {
+function Card({ product, addCart, isAdmin }) {
   let navigate = useNavigate();
 
   return (
@@ -44,20 +44,22 @@ function Card({ product, addCart }) {
         {product.title}
       </Title>
       <Rate
-        style={{ display: "block",marginTop:"0.6128em" }}
+        style={{ display: "block", marginTop: "0.6128em" }}
         allowHalf
-        disabled 
+        disabled
         value={product.rating.rate}
       />
 
-      <Button
-        onClick={() => addCart(product)}
-        style={{ marginTop: "2em" }}
-        type="primary"
-        block
-      >
-        Add to cart
-      </Button>
+      {!isAdmin ? (
+        <Button
+          onClick={() => addCart(product)}
+          style={{ marginTop: "2em" }}
+          type="primary"
+          block
+        >
+          Add to cart
+        </Button>
+      ) : null}
 
       <Button
         onClick={() => navigate(`/products/${product.id}`)}
