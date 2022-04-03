@@ -3,6 +3,7 @@ import { BASE_URL } from "../constants/constants";
 
 export default function ProductsAPI() {
   const [products, setProducts] = useState([]);
+  const [adminProducts, setAdminProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState("");
@@ -105,6 +106,8 @@ export default function ProductsAPI() {
     addProduct,
     updateProudct,
     deleteProduct,
+    adminProducts,
+    setAdminProducts,
     setQuery,
     query,
     isLoading,

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Table, Form, Button, Modal, Input } from "antd";
+import { Table, Form, Button, Modal, Input, InputNumber, Select } from "antd";
 import { getColumns, EditableCell, mergeColumns } from "./helpers/helper";
 
-export const EditableTable = ({ products, setProducts }) => {
+export const EditableTable = ({ adminProducts, setAdminProducts }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
-  const [data, setData] = useState(products);
   const [editingKey, setEditingKey] = useState("");
   /* ===================
   ======functions======= */
@@ -15,10 +14,19 @@ export const EditableTable = ({ products, setProducts }) => {
     setIsModalVisible(true);
   };
 
-  const onFinish = (product) => {
-    console.log(product);
-    onReset();
+  const handleAddProduct = (product) => {
+    let id;
+    if (adminProducts.length > 0) {
+      id = adminProducts.length + 1;
+    } else {
+      id = 1;
+    }
+    setAdminProducts([...adminProducts, { ...product, id }]);
+  };
 
+  const onFinish = (product) => {
+    handleAddProduct(product);
+    onReset();
     setIsModalVisible(false);
   };
 
@@ -54,22 +62,21 @@ export const EditableTable = ({ products, setProducts }) => {
   };
   // save editing
 
-  const save = async (id) => {
+  const handleUpdateProduct = async (id) => {
     try {
       const row = await form.validateFields();
-      console.log(row);
-      const newData = [...data];
+      const newData = [...adminProducts];
 
       const index = newData.findIndex((item) => id === item.id);
 
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
+        setAdminProducts(newData);
         setEditingKey("");
       } else {
         newData.push(row);
-        setData(newData);
+        setAdminProducts(newData);
         setEditingKey("");
       }
     } catch (errInfo) {
@@ -77,11 +84,35 @@ export const EditableTable = ({ products, setProducts }) => {
     }
   };
 
-  const columns = getColumns(editingKey, isEditing, save, cancel, edit);
+  const handleDeletProduct = (id) => {
+    try {
+      const filteredProudcts = adminProducts.filter(
+        (product) => product.id !== id
+      );
+      console.log(filteredProudcts);
+
+      if (filteredProudcts.length > 0) {
+        setAdminProducts(...filteredProudcts);
+      } else {
+        setAdminProducts([]);
+      }
+    } catch (errInfo) {
+      console.log("Validate Failed:", errInfo);
+    }
+  };
+
+  const columns = getColumns(
+    editingKey,
+    isEditing,
+    handleUpdateProduct,
+    cancel,
+    edit,
+    handleDeletProduct
+  );
   const mergedColumns = mergeColumns(columns, isEditing);
 
   return (
-    <Form form={form} component={false}>
+    <>
       <Button
         type="primary"
         style={{
@@ -91,74 +122,85 @@ export const EditableTable = ({ products, setProducts }) => {
       >
         Add product
       </Button>
-      <Modal
-        onCancel={handleCancel}
-        maskClosable={false}
-        title="Add new product"
-        footer={null}
-        visible={isModalVisible}
-      >
-        <Form
-          form={form2}
-          name="basic"
-          wrapperCol={{ span: 24 }}
-          layout="vertical"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
+
+      <Form form={form} component={false}>
+        <Modal
+          onCancel={handleCancel}
+          maskClosable={false}
+          title="Add new product"
+          footer={null}
+          visible={isModalVisible}
         >
-          <Form.Item
-            label="Product name"
-            name="productName"
-            rules={[{ message: "Please input  product name!" }]}
+          <Form
+            form={form2}
+            name="basic"
+            wrapperCol={{ span: 24 }}
+            layout="vertical"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
           >
-            <Input />
-          </Form.Item>
+            <Form.Item
+              label="Title"
+              name="title"
+              rules={[{ message: "Please input  product name!" }]}
+            >
+              <Input />
+            </Form.Item>
 
-          <Form.Item
-            label="Product description"
-            name="productDescription"
-            rules={[{ message: "Please input  product description!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Product category"
-            name="productCategory"
-            rules={[{ message: "Please input  product category!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            type="number"
-            label="Product price"
-            name="productPrice"
-            rules={[{ message: "Please input  product price!" }]}
-          >
-            <Input />
-          </Form.Item>
+            <Form.Item
+              label="Description"
+              name="description"
+              rules={[{ message: "Please input  product description!" }]}
+            >
+              <Input />
+            </Form.Item>
 
-          <Form.Item wrapperCol={{ span: 24 }}>
-            <Button block type="primary" htmlType="submit">
-              Add
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+            <Form.Item name="category" label="Category">
+              <Select>
+                <Select.Option value="electronics">Electronics</Select.Option>
+                <Select.Option value="jewelery">Jewelery</Select.Option>
+                <Select.Option value="men's clothing">
+                  Men's clothing
+                </Select.Option>
+                <Select.Option value="women's clothing">
+                  Women's clothing
+                </Select.Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              label="Price"
+              name="price"
+              rules={[
+                { type: "number", message: "Please input  product price!" },
+              ]}
+            >
+              <InputNumber />
+            </Form.Item>
+
+            <Form.Item wrapperCol={{ span: 24 }}>
+              <Button block type="primary" htmlType="submit">
+                Add
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={adminProducts}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+    </>
   );
 };

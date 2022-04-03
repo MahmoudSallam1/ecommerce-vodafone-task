@@ -1,7 +1,22 @@
 import React from "react";
-import { Popconfirm, Typography, Input, InputNumber, Form, Button } from "antd";
+import {
+  Popconfirm,
+  Typography,
+  Input,
+  InputNumber,
+  Form,
+  Button,
+  Select,
+} from "antd";
 
-export const getColumns = (editingKey, isEditing, save, cancel, edit) => {
+export const getColumns = (
+  editingKey,
+  isEditing,
+  save,
+  cancel,
+  edit,
+  deleteProduct
+) => {
   return [
     {
       title: "ID",
@@ -60,9 +75,18 @@ export const getColumns = (editingKey, isEditing, save, cancel, edit) => {
             >
               Edit
             </Typography.Link>{" "}
-            <Typography.Link disabled={editingKey !== ""}>
-              Delete
-            </Typography.Link>
+            <span>
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => deleteProduct(record.id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Typography.Link disabled={editingKey !== ""}>
+                  Delete
+                </Typography.Link>{" "}
+              </Popconfirm>
+            </span>
           </>
         );
       },
@@ -99,7 +123,11 @@ export const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+  const inputNode = () => {
+    if (inputType === "number") return <InputNumber />;
+    else if (inputType === "select") return <Select />;
+    else return <Input />;
+  };
   return (
     <td {...restProps}>
       {editing ? (
@@ -115,7 +143,7 @@ export const EditableCell = ({
             },
           ]}
         >
-          {inputNode}
+          {inputNode()}
         </Form.Item>
       ) : (
         children
