@@ -47,6 +47,7 @@ Open http://localhost:3000 to view it in the browser.
 ## UX/UI Design
 
 I designed the user interface using Figma. You could check the it out from here => https://www.figma.com/file/8IkS2vQXB8S35P95Se090Q/Vodafone-%7C-Ecommerce?node-id=0%3A1
+![Vodafone](https://user-images.githubusercontent.com/49441732/161425753-7789aeec-e52e-49c2-8667-12d72f7e858d.png)
 
 
 ## Feedback
