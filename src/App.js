@@ -1,5 +1,9 @@
-import React, { useContext } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
 import "./App.less";
 import LoginPage from "./views/Login/LoginPage";
 import ProductsPage from "./views/Products/ProductsPage/ProductsPage";

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { GlobalState } from "../../../context/GlobalState";
 import Card from "../../../components/Card/Card";
 import { Col, Row } from "antd";
@@ -37,7 +37,11 @@ function HomePage() {
               products && products.length > 0 ? (
                 products.map((product) => (
                   <Col key={product.id} xs={24} sm={24} md={12} lg={8}>
-                    <Card isAdmin={isAdmin} addCart={addCart} product={product} />
+                    <Card
+                      isAdmin={isAdmin}
+                      addCart={addCart}
+                      product={product}
+                    />
                   </Col>
                 ))
               ) : (

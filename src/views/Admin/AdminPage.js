@@ -3,13 +3,16 @@ import Header from "../../components/Header/Header";
 import { Row, Button, Col, Image, Rate, Typography } from "antd";
 import LoadingSkeleton from "../../components/LoadingSkeleton/LoadingSkeleton";
 import { GlobalState } from "../../context/GlobalState";
+
+import { EditableTable } from "./ProductsTable";
 import "./admin.styles.css";
 
 const { Title, Text, Paragraph } = Typography;
 
 function AdminPage() {
   const state = useContext(GlobalState);
-  const { isLoading } = state.productsAPI;
+  const { isLoading, products } = state.productsAPI;
+
 
   return (
     <>
@@ -18,7 +21,9 @@ function AdminPage() {
         {" "}
         {!isLoading ? (
           <Row justify="space-between" gutter={[16, 16]}>
-            <Col>Admin Page..</Col>
+            <Col>
+              <EditableTable products={products} />
+            </Col>
           </Row>
         ) : (
           <LoadingSkeleton />
