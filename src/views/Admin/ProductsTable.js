@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Table, Form, Button, Modal, Input, InputNumber, Select } from "antd";
 import { getColumns, EditableCell, mergeColumns } from "./helpers/helper";
 
-export const EditableTable = ({ adminProducts, setAdminProducts }) => {
+const { TextArea } = Input;
+
+function ProductsTable({ adminProducts, setAdminProducts, categories }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const [form2] = Form.useForm();
+  const [productForm] = Form.useForm();
   const [editingKey, setEditingKey] = useState("");
-  /* ===================
-  ======functions======= */
+
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -35,7 +36,7 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
   };
 
   const onReset = () => {
-    form2.resetFields();
+    productForm.resetFields();
   };
 
   const isEditing = (record) => record.id === editingKey;
@@ -111,8 +112,6 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
   );
   const mergedColumns = mergeColumns(columns, isEditing);
 
-  console.log(adminProducts);
-
   return (
     <>
       <Button
@@ -134,7 +133,7 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
           visible={isModalVisible}
         >
           <Form
-            form={form2}
+            form={productForm}
             name="basic"
             wrapperCol={{ span: 24 }}
             layout="vertical"
@@ -147,7 +146,7 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
               name="title"
               rules={[{ message: "Please input  product name!" }]}
             >
-              <Input />
+              <Input placeholder="Product title" />
             </Form.Item>
 
             <Form.Item
@@ -155,19 +154,16 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
               name="description"
               rules={[{ message: "Please input  product description!" }]}
             >
-              <Input />
+              <TextArea rows={4} placeholder="Product description" />
             </Form.Item>
 
             <Form.Item name="category" label="Category">
-              <Select>
-                <Select.Option value="electronics">Electronics</Select.Option>
-                <Select.Option value="jewelery">Jewelery</Select.Option>
-                <Select.Option value="men's clothing">
-                  Men's clothing
-                </Select.Option>
-                <Select.Option value="women's clothing">
-                  Women's clothing
-                </Select.Option>
+              <Select placeholder="Product category">
+                {categories.map((category) => (
+                  <Select.Option key={category} value={category}>
+                    {category.toUpperCase()}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
 
@@ -178,7 +174,11 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
                 { type: "number", message: "Please input  product price!" },
               ]}
             >
-              <InputNumber />
+              <InputNumber
+                min={1}
+                style={{ width: "100%" }}
+                placeholder="Product price"
+              />
             </Form.Item>
 
             <Form.Item wrapperCol={{ span: 24 }}>
@@ -205,4 +205,6 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
       </Form>
     </>
   );
-};
+}
+
+export default ProductsTable;

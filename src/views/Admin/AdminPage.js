@@ -1,17 +1,14 @@
 import React, { useContext } from "react";
 import Header from "../../components/Header/Header";
-import { Row, Button, Col, Image, Rate, Typography } from "antd";
 import LoadingSkeleton from "../../components/LoadingSkeleton/LoadingSkeleton";
 import { GlobalState } from "../../context/GlobalState";
 
-import { EditableTable } from "./ProductsTable";
+import EditableTable from "./ProductsTable";
 import "./admin.styles.css";
-
-const { Title, Text, Paragraph } = Typography;
 
 function AdminPage() {
   const state = useContext(GlobalState);
-  const { isLoading, products, adminProducts, setAdminProducts } =
+  const { isLoading, categories, adminProducts, setAdminProducts } =
     state.productsAPI;
 
   return (
@@ -23,6 +20,7 @@ function AdminPage() {
           <EditableTable
             adminProducts={adminProducts}
             setAdminProducts={setAdminProducts}
+            categories={categories}
           />
         ) : (
           <LoadingSkeleton />

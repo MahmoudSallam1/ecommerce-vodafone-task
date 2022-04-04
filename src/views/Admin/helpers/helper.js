@@ -9,6 +9,9 @@ import {
   Select,
 } from "antd";
 
+const { TextArea } = Input;
+
+
 export const getColumns = (
   editingKey,
   isEditing,
@@ -54,7 +57,7 @@ export const getColumns = (
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <div>
             <Typography.Link
               onClick={() => save(record.id)}
               style={{
@@ -64,30 +67,29 @@ export const getColumns = (
               Save
             </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+              <a href={{}}>Cancel</a>
             </Popconfirm>
-          </span>
+          </div>
         ) : (
-          <>
-            <Typography.Link
+          <div style={{ display: "flex", gap: "0.6128em" }}>
+            <Button
+              type="success"
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
             >
               Edit
-            </Typography.Link>{" "}
-            <span>
-              <Popconfirm
-                title="Sure to delete?"
-                onConfirm={() => deleteProduct(record.id)}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Typography.Link disabled={editingKey !== ""}>
-                  Delete
-                </Typography.Link>{" "}
-              </Popconfirm>
-            </span>
-          </>
+            </Button>{" "}
+            <Popconfirm
+              title="Sure to delete?"
+              onConfirm={() => deleteProduct(record.id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type="primary" disabled={editingKey !== ""}>
+                Delete
+              </Button>{" "}
+            </Popconfirm>
+          </div>
         );
       },
     },
@@ -126,6 +128,7 @@ export const EditableCell = ({
   const inputNode = () => {
     if (inputType === "number") return <InputNumber />;
     else if (inputType === "select") return <Select />;
+    else if(inputType==="textarea") return <TextArea/>
     else return <Input />;
   };
   return (
