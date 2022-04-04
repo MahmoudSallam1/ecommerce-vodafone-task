@@ -47,11 +47,7 @@ function App() {
         />
         <Route
           path="admin"
-          element={
-            <ProtectedRoutes>
-              {isAdmin ? <AdminPage /> : <NotAuthorized />}
-            </ProtectedRoutes>
-          }
+          element={<ProtectedRoutes>{<AdminPage />}</ProtectedRoutes>}
         />
       </Routes>
     </Router>
