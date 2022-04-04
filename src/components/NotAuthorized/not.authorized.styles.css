@@ -1,0 +1,9 @@
+.not-authorized-container {
+    height: 100vh;
+    width: 95%;
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    place-items: center;
+
+}

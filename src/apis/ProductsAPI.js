@@ -3,6 +3,7 @@ import { BASE_URL } from "../constants/constants";
 
 export default function ProductsAPI() {
   const [products, setProducts] = useState([]);
+  const [adminProducts, setAdminProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState("");
@@ -38,6 +39,22 @@ export default function ProductsAPI() {
     }
   };
 
+  // seed the app
+  useEffect(() => {
+    getProducts();
+  }, [query]);
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  /*================
+  ======CRUD========
+  1. Add Product
+  2. Update Product
+  3. Delete Product
+  */
+
   // add product
 
   const addProduct = async (product) => {
@@ -53,21 +70,44 @@ export default function ProductsAPI() {
     }
   };
 
-  useEffect(() => {
-    getProducts();
-  }, [query]);
+  // update product
 
-  // get categories
+  const updateProudct = async (product) => {
+    try {
+      const response = await fetch(`${BASE_URL}/products/${product.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(product),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  useEffect(() => {
-    getCategories();
-  }, []);
+  // delete product
+
+  const deleteProduct = async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/products/${id}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return {
     products,
     categories,
     setProducts,
     addProduct,
+    updateProudct,
+    deleteProduct,
+    adminProducts,
+    setAdminProducts,
     setQuery,
     query,
     isLoading,

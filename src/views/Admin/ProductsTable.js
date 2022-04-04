@@ -1,55 +1,47 @@
 import React, { useState } from "react";
-import {
-  Table,
-  Input,
-  InputNumber,
-  Popconfirm,
-  Form,
-  Typography,
-  Button,
-} from "antd";
+import { Table, Form, Button, Modal, Input, InputNumber, Select } from "antd";
+import { getColumns, EditableCell, mergeColumns } from "./helpers/helper";
 
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
+const { TextArea } = Input;
 
-export const EditableTable = ({ products }) => {
+function ProductsTable({ adminProducts, setAdminProducts, categories }) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const [data, setData] = useState(products);
+  const [productForm] = Form.useForm();
   const [editingKey, setEditingKey] = useState("");
 
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleAddProduct = (product) => {
+    let id;
+    if (adminProducts.length > 0) {
+      id = adminProducts.length + 1;
+    } else {
+      id = 1;
+    }
+    setAdminProducts([...adminProducts, { ...product, id }]);
+  };
+
+  const onFinish = (product) => {
+    handleAddProduct(product);
+    onReset();
+    setIsModalVisible(false);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const onReset = () => {
+    productForm.resetFields();
+  };
+
   const isEditing = (record) => record.id === editingKey;
+
+  // edit cell
 
   const edit = (record) => {
     form.setFieldsValue({
@@ -62,26 +54,30 @@ export const EditableTable = ({ products }) => {
     setEditingKey(record.id);
   };
 
+  // cancel editing
   const cancel = () => {
     setEditingKey("");
   };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  // save editing
 
-  const save = async (id) => {
+  const handleUpdateProduct = async (id) => {
     try {
       const row = await form.validateFields();
-      console.log(row);
-      const newData = [...data];
+      const newData = [...adminProducts];
 
       const index = newData.findIndex((item) => id === item.id);
 
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
+        setAdminProducts(newData);
         setEditingKey("");
       } else {
         newData.push(row);
-        setData(newData);
+        setAdminProducts(newData);
         setEditingKey("");
       }
     } catch (errInfo) {
@@ -89,106 +85,126 @@ export const EditableTable = ({ products }) => {
     }
   };
 
-  const columns = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      width: "25%",
-      editable: false,
-    },
-    {
-      title: "Title",
-      dataIndex: "title",
-      width: "25%",
-      editable: true,
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      width: "25%",
-      editable: true,
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      width: "25%",
-      editable: true,
-    },
-    {
-      title: "Operation",
-      dataIndex: "operation",
-      render: (_, record) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.id)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Save
-            </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <>
-            <Typography.Link
-              disabled={editingKey !== ""}
-              onClick={() => edit(record)}
-            >
-              Edit
-            </Typography.Link>{" "}
-            <Typography.Link disabled={editingKey !== ""}>
-              Delete
-            </Typography.Link>
-          </>
-        );
-      },
-    },
-  ];
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
+  const handleDeletProduct = (id) => {
+    try {
+      const filteredProudcts = adminProducts.filter(
+        (product) => product.id !== id
+      );
+      console.log(filteredProudcts);
 
-    return {
-      ...col,
-      onCell: (record) => ({
-        record,
-        inputType: col.dataIndex === "price" ? "number" : "text",
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
+      if (filteredProudcts.length > 0) {
+        setAdminProducts(filteredProudcts);
+      } else {
+        setAdminProducts([]);
+      }
+    } catch (errInfo) {
+      console.log("Validate Failed:", errInfo);
+    }
+  };
+
+  const columns = getColumns(
+    editingKey,
+    isEditing,
+    handleUpdateProduct,
+    cancel,
+    edit,
+    handleDeletProduct
+  );
+  const mergedColumns = mergeColumns(columns, isEditing);
+
   return (
-    <Form form={form} component={false}>
+    <>
       <Button
         type="primary"
         style={{
           marginBottom: 16,
         }}
+        onClick={showModal}
       >
         Add product
       </Button>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
+
+      <Form form={form} component={false}>
+        <Modal
+          onCancel={handleCancel}
+          maskClosable={false}
+          title="Add new product"
+          footer={null}
+          visible={isModalVisible}
+        >
+          <Form
+            form={productForm}
+            name="basic"
+            wrapperCol={{ span: 24 }}
+            layout="vertical"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="Title"
+              name="title"
+              rules={[{ message: "Please input  product name!" }]}
+            >
+              <Input placeholder="Product title" />
+            </Form.Item>
+
+            <Form.Item
+              label="Description"
+              name="description"
+              rules={[{ message: "Please input  product description!" }]}
+            >
+              <TextArea rows={4} placeholder="Product description" />
+            </Form.Item>
+
+            <Form.Item name="category" label="Category">
+              <Select placeholder="Product category">
+                {categories.map((category) => (
+                  <Select.Option key={category} value={category}>
+                    {category.toUpperCase()}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              label="Price"
+              name="price"
+              rules={[
+                { type: "number", message: "Please input  product price!" },
+              ]}
+            >
+              <InputNumber
+                min={1}
+                style={{ width: "100%" }}
+                placeholder="Product price"
+              />
+            </Form.Item>
+
+            <Form.Item wrapperCol={{ span: 24 }}>
+              <Button block type="primary" htmlType="submit">
+                Add
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={adminProducts}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: cancel,
+          }}
+        />
+      </Form>
+    </>
   );
-};
+}
+
+export default ProductsTable;

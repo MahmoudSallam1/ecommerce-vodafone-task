@@ -1,9 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import React, { useContext } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.less";
 import LoginPage from "./views/Login/LoginPage";
 import ProductsPage from "./views/Products/ProductsPage/ProductsPage";
@@ -15,6 +11,7 @@ import ProtectedRoutes from "./routes/ProtectedRoutes";
 import AdminPage from "./views/Admin/AdminPage";
 
 import { GlobalState } from "./context/GlobalState";
+import NotAuthorized from "./components/NotAuthorized/NotAuthorized";
 function App() {
   const state = useContext(GlobalState);
   const { getToken } = state.userAPI;
@@ -52,7 +49,7 @@ function App() {
           path="admin"
           element={
             <ProtectedRoutes>
-              {isAdmin ? <AdminPage /> : <h3>No authorized!!</h3>}
+              {isAdmin ? <AdminPage /> : <NotAuthorized />}
             </ProtectedRoutes>
           }
         />

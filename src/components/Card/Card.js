@@ -64,7 +64,7 @@ function Card({ product, addCart, isAdmin }) {
       <Button
         onClick={() => navigate(`/products/${product.id}`)}
         style={{ marginTop: "0.8128em" }}
-        type="default"
+        type={!isAdmin ? "default" : "primary"}
         block
       >
         Details
