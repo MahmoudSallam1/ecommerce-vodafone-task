@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footer/Footer";
 import { Row, Button, Col, Image, Rate, Typography } from "antd";
@@ -11,6 +11,7 @@ import "./product.details.css";
 const { Title, Text, Paragraph } = Typography;
 
 function ProductDetailsPage() {
+  let navigate = useNavigate();
   const state = useContext(GlobalState);
   const { addCart } = state.cartAPI;
   const { getToken } = state.userAPI;
@@ -66,7 +67,16 @@ function ProductDetailsPage() {
                 >
                   Add to cart
                 </Button>
-              ) : null}
+              ) : (
+                <Button
+                  onClick={() => navigate("/admin")}
+                  style={{ marginTop: "1.5em" }}
+                  type="primary"
+                  block
+                >
+                  Edit product
+                </Button>
+              )}
             </Col>
           </Row>
         ) : (
