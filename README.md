@@ -47,6 +47,10 @@ https://ecommerce-vodafone-task.vercel.app/
 
 **password:** user
 
+**username:** admin
+
+**password:** admin
+
 
 ## Tech Stack
 
