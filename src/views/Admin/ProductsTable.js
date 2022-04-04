@@ -92,7 +92,7 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
       console.log(filteredProudcts);
 
       if (filteredProudcts.length > 0) {
-        setAdminProducts(...filteredProudcts);
+        setAdminProducts(filteredProudcts);
       } else {
         setAdminProducts([]);
       }
@@ -110,6 +110,8 @@ export const EditableTable = ({ adminProducts, setAdminProducts }) => {
     handleDeletProduct
   );
   const mergedColumns = mergeColumns(columns, isEditing);
+
+  console.log(adminProducts);
 
   return (
     <>
